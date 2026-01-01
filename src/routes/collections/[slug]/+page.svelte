@@ -65,7 +65,7 @@
 		},
 	};
 	
-	// Sample hadiths for demo
+	// Sample hadiths for demo - IDs match the hadithsDatabase in hadith/[id]/+page.svelte
 	const sampleHadiths = [
 		{ id: '1', text: 'إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ، وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى', narrator: 'عمر بن الخطاب رضي الله عنه', chapter: 'بدء الوحي', number: 1 },
 		{ id: '2', text: 'بُنِيَ الإِسْلاَمُ عَلَى خَمْسٍ: شَهَادَةِ أَنْ لاَ إِلَهَ إِلاَّ اللَّهُ وَأَنَّ مُحَمَّدًا رَسُولُ اللَّهِ', narrator: 'عبد الله بن عمر رضي الله عنهما', chapter: 'الإيمان', number: 8 },
@@ -73,6 +73,21 @@
 		{ id: '4', text: 'لاَ يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لأَخِيهِ مَا يُحِبُّ لِنَفْسِهِ', narrator: 'أنس بن مالك رضي الله عنه', chapter: 'الإيمان', number: 13 },
 		{ id: '5', text: 'مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ', narrator: 'أبو هريرة رضي الله عنه', chapter: 'الإيمان', number: 15 },
 	];
+	
+	// Map hadith number to database ID based on collection
+	function getHadithDbId(hadithNumber: number): string {
+		// For bukhari collection, map the display numbers to actual database IDs
+		const numberToIdMap: Record<string, Record<number, number>> = {
+			bukhari: { 1: 1, 8: 2, 10: 3, 13: 4, 15: 5 },
+			muslim: { 671: 671 }
+		};
+		
+		const collectionMap = numberToIdMap[slug];
+		if (collectionMap && collectionMap[hadithNumber]) {
+			return `${slug}-${collectionMap[hadithNumber]}`;
+		}
+		return `${slug}-${hadithNumber}`;
+	}
 	
 	let slug = $derived($page.params.slug);
 	let collection = $derived(collectionsData[slug] || collectionsData.bukhari);

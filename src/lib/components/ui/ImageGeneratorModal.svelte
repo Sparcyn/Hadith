@@ -1,8 +1,8 @@
-<script lang="ts">
-	import { X, Download, Share2, ToggleLeft, ToggleRight } from 'lucide-svelte';
-	
-	interface Props {
-		isOpen: boolean;
+<!--
+	============================================================================
+	ملف: ImageGeneratorModal.svelte
+	الوصف: نافذة إنشاء صور الأحاديث القابلة للمشاركة
+	==========================================================
 		hadith: { arabicText: string; narrator: string; collection: string; reference: string; };
 		onClose: () => void;
 	}

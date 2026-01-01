@@ -1,59 +1,139 @@
+<!--
+	============================================================================
+	ملف: HeroSearch.svelte
+	الوصف: مكون البطل (Hero) مع صندوق البحث الرئيسي
+	============================================================================
+	
+	هذا المكون يعرض القسم الرئيسي في الصفحة الرئيسية
+	يحتوي على عنوان الموقع، صندوق البحث، والإحصائيات
+	
+	المميزات:
+	- خلفية بأنماط إسلامية زخرفية
+	- صندوق بحث متقدم مع فلاتر
+	- بحث سريع بكلمات مقترحة
+	- إحصائيات الموقع
+	============================================================================
+-->
+
 <script lang="ts">
+	// =========================================================================
+	// الاستيرادات
+	// =========================================================================
+	
+	// أيقونات من مكتبة Lucide
+	// Search: أيقونة البحث | ChevronDown: سهم للأسفل
 	import { Search, ChevronDown } from 'lucide-svelte';
+	
+	// دالة التنقل البرمجي بين الصفحات
 	import { goto } from '$app/navigation';
 	
+	// =========================================================================
+	// متغيرات الحالة (State)
+	// =========================================================================
+	
+	// نص البحث المُدخل من المستخدم
 	let searchQuery = $state('');
+	
+	// نوع البحث المختار (الكل، نص، راوي، موضوع، رقم)
 	let searchType = $state('all');
+	
+	// حالة إظهار قائمة الفلاتر المنسدلة
 	let showFilters = $state(false);
 	
+	// =========================================================================
+	// بيانات ثابتة
+	// =========================================================================
+	
+	// أنواع البحث المتاحة
 	const searchTypes = [
-		{ value: 'all', label: 'بحث في الموقع' },
-		{ value: 'text', label: 'نص الحديث' },
-		{ value: 'narrator', label: 'الراوي' },
-		{ value: 'topic', label: 'الموضوع' },
-		{ value: 'number', label: 'رقم الحديث' }
+		{ value: 'all', label: 'بحث في الموقع' },   // بحث شامل
+		{ value: 'text', label: 'نص الحديث' },      // بحث في النص
+		{ value: 'narrator', label: 'الراوي' },     // بحث بالراوي
+		{ value: 'topic', label: 'الموضوع' },       // بحث بالموضوع
+		{ value: 'number', label: 'رقم الحديث' }    // بحث بالرقم
 	];
 	
+	// كلمات البحث السريع المقترحة
 	const quickSearches = [
 		'الصلاة', 'الصيام', 'الزكاة', 'الصبر', 'الأخلاق', 'الصدق'
 	];
 	
+	// =========================================================================
+	// الدوال
+	// =========================================================================
+	
+	/**
+	 * معالج إرسال نموذج البحث
+	 * ينتقل لصفحة البحث مع المعاملات
+	 */
 	function handleSearch(e: Event) {
+		// منع السلوك الافتراضي للنموذج
 		e.preventDefault();
+		
+		// التحقق من وجود نص بحث
 		if (searchQuery.trim()) {
+			// الانتقال لصفحة البحث مع المعاملات
 			goto(`/search?q=${encodeURIComponent(searchQuery.trim())}&type=${searchType}`);
 		}
 	}
 </script>
 
+<!-- =========================================================================
+	قسم القالب (Template)
+	========================================================================= -->
+
+<!-- 
+	قسم البطل الرئيسي
+	يحتوي على الخلفية الزخرفية والمحتوى
+-->
 <section class="hero-section relative overflow-hidden">
-	<!-- Moroccan/Islamic Geometric Pattern Background -->
+	
+	<!-- ===================================================================
+		طبقات الأنماط الزخرفية في الخلفية
+	=================================================================== -->
+	
+	<!-- نمط الزليج المغربي -->
 	<div class="pattern-layer pattern-zellige"></div>
+	
+	<!-- نمط الأرابيسك (الزخارف المنحنية) -->
 	<div class="pattern-layer pattern-arabesque"></div>
+	
+	<!-- نمط النجوم الإسلامية الثمانية -->
 	<div class="pattern-layer pattern-stars"></div>
 	
+	<!-- ===================================================================
+		محتوى القسم
+	=================================================================== -->
 	<div class="container relative pt-32 pb-20 md:pt-40 md:pb-28">
 		<div class="max-w-4xl mx-auto text-center">
-			<!-- Subtitle -->
-			<p class="text-base md:text-lg text-[#1B4D3E] mb-3 font-medium">بسم الله الرحمن الرحيم</p>
 			
-			<!-- Title -->
+			<!-- البسملة -->
+			<p class="text-base md:text-lg text-[#1B4D3E] mb-3 font-medium">
+				بسم الله الرحمن الرحيم
+			</p>
+			
+			<!-- العنوان الرئيسي -->
 			<h1 class="font-display text-4xl md:text-5xl lg:text-6xl text-[#1B4D3E] mb-4">
 				الباحث الحديثي
 			</h1>
+			
+			<!-- الوصف الفرعي -->
 			<p class="text-lg md:text-xl text-gray-600 mb-10">
 				ابحث واكتشف في أكبر كتب الحديث النبوي
 			</p>
 			
-			<!-- Search Box -->
+			<!-- =============================================================
+				صندوق البحث
+			============================================================= -->
 			<form onsubmit={handleSearch} class="mb-8">
 				<div class="search-box">
-					<!-- Submit -->
+					
+					<!-- زر البحث -->
 					<button type="submit" class="search-btn">
 						بحث
 					</button>
 					
-					<!-- Search Input -->
+					<!-- حقل إدخال البحث -->
 					<div class="flex-1 relative">
 						<input
 							type="search"
@@ -63,17 +143,20 @@
 						/>
 					</div>
 					
-					<!-- Filter Dropdown -->
+					<!-- قائمة فلاتر البحث المنسدلة -->
 					<div class="relative flex-shrink-0">
+						<!-- زر فتح القائمة -->
 						<button
 							type="button"
 							onclick={() => showFilters = !showFilters}
 							class="h-11 px-4 flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition-colors"
 						>
+							<!-- عرض نوع البحث المختار -->
 							<span>{searchTypes.find(t => t.value === searchType)?.label}</span>
 							<ChevronDown class="w-4 h-4" />
 						</button>
 						
+						<!-- القائمة المنسدلة -->
 						{#if showFilters}
 							<div class="filter-dropdown">
 								{#each searchTypes as type}
@@ -89,11 +172,14 @@
 						{/if}
 					</div>
 					
+					<!-- أيقونة البحث -->
 					<Search class="w-5 h-5 text-gray-400 ml-3" />
 				</div>
 			</form>
 			
-			<!-- Quick Searches -->
+			<!-- =============================================================
+				البحث السريع - كلمات مقترحة
+			============================================================= -->
 			<div class="flex flex-wrap items-center justify-center gap-3">
 				<span class="text-base text-gray-500">بحث سريع:</span>
 				{#each quickSearches as term}
@@ -107,7 +193,9 @@
 			</div>
 		</div>
 		
-		<!-- Stats Row -->
+		<!-- =================================================================
+			صف الإحصائيات
+		================================================================= -->
 		<div class="flex items-center justify-center gap-5 md:gap-8 mt-12">
 			{#each [
 				{ value: '٢', label: 'لغات' },
@@ -116,7 +204,11 @@
 				{ value: '٩', label: 'كتب' },
 			] as stat}
 				<div class="stat-card">
-					<p class="font-display text-2xl md:text-3xl text-[#1B4D3E] mb-1">{stat.value}</p>
+					<!-- الرقم -->
+					<p class="font-display text-2xl md:text-3xl text-[#1B4D3E] mb-1">
+						{stat.value}
+					</p>
+					<!-- التسمية -->
 					<p class="text-sm text-gray-500">{stat.label}</p>
 				</div>
 			{/each}
@@ -124,45 +216,58 @@
 	</div>
 </section>
 
+<!-- =========================================================================
+	قسم التنسيقات (CSS)
+	========================================================================= -->
 <style>
+	/* =========================================================================
+	   قسم البطل الرئيسي
+	   خلفية كريمية مع تدرج
+	   ========================================================================= */
 	.hero-section {
 		background: linear-gradient(180deg, #f5f0e6 0%, #ebe4d6 100%);
 		min-height: auto;
 	}
 	
-	/* Islamic Pattern Layers */
+	/* =========================================================================
+	   طبقات الأنماط الزخرفية
+	   ========================================================================= */
 	.pattern-layer {
 		position: absolute;
 		inset: 0;
-		pointer-events: none;
+		pointer-events: none;  /* لا تتفاعل مع النقر */
 	}
 	
-	/* Moroccan Zellige-inspired geometric pattern */
+	/* نمط الزليج المغربي - أشكال هندسية متداخلة */
 	.pattern-zellige {
 		opacity: 0.06;
 		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%231B4D3E' stroke-width='0.5'%3E%3Cpath d='M40 0L80 40L40 80L0 40Z'/%3E%3Cpath d='M40 10L70 40L40 70L10 40Z'/%3E%3Cpath d='M40 20L60 40L40 60L20 40Z'/%3E%3Ccircle cx='40' cy='40' r='8'/%3E%3Cpath d='M0 0L40 40M80 0L40 40M0 80L40 40M80 80L40 40'/%3E%3C/g%3E%3C/svg%3E");
 		background-size: 80px 80px;
 	}
 	
-	/* Arabesque flowing curves */
+	/* نمط الأرابيسك - منحنيات متدفقة */
 	.pattern-arabesque {
 		opacity: 0.04;
 		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23D4AF37' stroke-width='0.4'%3E%3Cpath d='M60 0C60 33.137 33.137 60 0 60C33.137 60 60 86.863 60 120C60 86.863 86.863 60 120 60C86.863 60 60 33.137 60 0Z'/%3E%3Ccircle cx='60' cy='60' r='20'/%3E%3Ccircle cx='60' cy='60' r='35'/%3E%3C/g%3E%3C/svg%3E");
 		background-size: 120px 120px;
 	}
 	
-	/* 8-pointed Islamic stars */
+	/* نمط النجوم الإسلامية الثمانية */
 	.pattern-stars {
 		opacity: 0.03;
 		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke='%231B4D3E' stroke-width='0.3'%3E%3Cpath d='M30 0L37.5 22.5L60 30L37.5 37.5L30 60L22.5 37.5L0 30L22.5 22.5Z'/%3E%3Ccircle cx='30' cy='30' r='6'/%3E%3C/g%3E%3C/svg%3E");
 		background-size: 60px 60px;
 	}
 	
+	/* =========================================================================
+	   صندوق البحث
+	   ========================================================================= */
 	.search-box {
 		background: white;
-		border-radius: 50px;
+		border-radius: 50px;        /* حواف دائرية كاملة */
 		padding: 8px;
-		box-shadow: 0 8px 32px rgba(27, 77, 62, 0.1), 0 2px 8px rgba(27, 77, 62, 0.05);
+		box-shadow: 0 8px 32px rgba(27, 77, 62, 0.1), 
+		            0 2px 8px rgba(27, 77, 62, 0.05);
 		display: flex;
 		align-items: center;
 		gap: 10px;
@@ -171,6 +276,7 @@
 		border: 1px solid rgba(27, 77, 62, 0.08);
 	}
 	
+	/* زر البحث */
 	.search-btn {
 		background: linear-gradient(135deg, #1B4D3E 0%, #0d3d32 100%);
 		color: white;
@@ -184,11 +290,16 @@
 		flex-shrink: 0;
 		transition: all 0.2s ease;
 	}
+	
+	/* تأثير التمرير على زر البحث */
 	.search-btn:hover {
 		transform: translateY(-1px);
 		box-shadow: 0 4px 16px rgba(27, 77, 62, 0.3);
 	}
 	
+	/* =========================================================================
+	   قائمة الفلاتر المنسدلة
+	   ========================================================================= */
 	.filter-dropdown {
 		position: absolute;
 		top: 100%;
@@ -204,11 +315,15 @@
 		border: 1px solid rgba(0,0,0,0.05);
 	}
 	
+	/* تأثير ظهور القائمة */
 	@keyframes fadeIn {
 		from { opacity: 0; transform: translateY(-8px); }
 		to { opacity: 1; transform: translateY(0); }
 	}
 	
+	/* =========================================================================
+	   أزرار البحث السريع
+	   ========================================================================= */
 	.quick-tag {
 		padding: 10px 20px;
 		font-size: 15px;
@@ -219,6 +334,8 @@
 		cursor: pointer;
 		transition: all 0.2s ease;
 	}
+	
+	/* تأثير التمرير */
 	.quick-tag:hover {
 		background: white;
 		color: #1B4D3E;
@@ -226,6 +343,9 @@
 		box-shadow: 0 2px 8px rgba(27, 77, 62, 0.1);
 	}
 	
+	/* =========================================================================
+	   بطاقات الإحصائيات
+	   ========================================================================= */
 	.stat-card {
 		background: white;
 		border-radius: 16px;

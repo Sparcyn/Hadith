@@ -1,77 +1,171 @@
+/**
+ * ============================================================================
+ * ملف: recentlyViewed.ts
+ * الوصف: مخزن الأحاديث المشاهدة مؤخراً
+ * ============================================================================
+ * 
+ * هذا الملف يدير سجل الأحاديث التي شاهدها المستخدم
+ * يحفظ البيانات في localStorage للاستمرارية بين الجلسات
+ * 
+ * الاستخدام:
+ * import { recentlyViewed } from '$lib/stores/recentlyViewed';
+ * recentlyViewed.add(hadith);  // إضافة حديث
+ * recentlyViewed.remove(id);   // حذف حديث
+ * recentlyViewed.clear();      // مسح الكل
+ * ============================================================================
+ */
+
+// استيراد دالة writable من Svelte لإنشاء مخزن تفاعلي
+// المخزن التفاعلي يُحدّث الواجهة تلقائياً عند تغيير البيانات
 import { writable } from 'svelte/store';
+
+// استيراد متغير browser للتحقق من بيئة التشغيل
+// browser = true في المتصفح، false في الخادم (SSR)
 import { browser } from '$app/environment';
 
+/**
+ * واجهة بيانات الحديث المشاهد
+ * تحدد هيكل البيانات المحفوظة لكل حديث
+ */
 export interface RecentHadith {
-	id: string;
-	text: string;
-	collection: string;
-	narrator?: string;
-	viewedAt: number;
+	id: string;          // المعرف الفريد للحديث
+	text: string;        // نص الحديث
+	collection: string;  // المصدر (مثل: صحيح البخاري)
+	narrator?: string;   // اسم الراوي (اختياري)
+	viewedAt: number;    // وقت المشاهدة (timestamp)
 }
 
+// ============================================================================
+// الثوابت
+// ============================================================================
+
+// مفتاح التخزين في localStorage
+// يُستخدم لحفظ واسترجاع البيانات
 const STORAGE_KEY = 'hadith_history';
+
+// الحد الأقصى للأحاديث المحفوظة
+// يمنع تراكم البيانات الزائدة
 const MAX_ITEMS = 10;
 
+/**
+ * دالة إنشاء مخزن الأحاديث المشاهدة
+ * تُرجع كائن المخزن مع جميع الدوال المطلوبة
+ */
 function createRecentlyViewedStore() {
-	// Load from localStorage on init
+	
+	// ========================================================================
+	// دالة جلب البيانات الأولية من localStorage
+	// تُستدعى عند تهيئة المخزن
+	// ========================================================================
 	const getInitial = (): RecentHadith[] => {
+		// التحقق من وجود المتصفح (ليس SSR)
 		if (!browser) return [];
+		
+		// محاولة قراءة البيانات من localStorage
 		try {
+			// جلب البيانات المخزنة
 			const stored = localStorage.getItem(STORAGE_KEY);
+			
+			// تحويل JSON إلى مصفوفة أو إرجاع مصفوفة فارغة
 			return stored ? JSON.parse(stored) : [];
 		} catch {
+			// في حالة خطأ، إرجاع مصفوفة فارغة
 			return [];
 		}
 	};
 	
+	// ========================================================================
+	// إنشاء المخزن التفاعلي مع البيانات الأولية
+	// ========================================================================
 	const { subscribe, set, update } = writable<RecentHadith[]>(getInitial());
 	
-	// Persist to localStorage
+	// ========================================================================
+	// دالة حفظ البيانات في localStorage
+	// تُستدعى بعد كل تعديل على البيانات
+	// ========================================================================
 	const persist = (items: RecentHadith[]) => {
+		// التحقق من وجود المتصفح
 		if (browser) {
 			try {
+				// تحويل المصفوفة إلى JSON وحفظها
 				localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
 			} catch (e) {
+				// طباعة تحذير في حالة فشل الحفظ
 				console.warn('Failed to save history:', e);
 			}
 		}
 	};
 	
+	// ========================================================================
+	// إرجاع كائن المخزن مع جميع الدوال
+	// ========================================================================
 	return {
+		// دالة الاشتراك - تُمكّن المكونات من الاستماع للتغييرات
 		subscribe,
 		
+		/**
+		 * إضافة حديث جديد للسجل
+		 * يُزيل التكرارات ويضيف الحديث في البداية
+		 * @param hadith - بيانات الحديث (بدون viewedAt)
+		 */
 		add: (hadith: Omit<RecentHadith, 'viewedAt'>) => {
 			update(items => {
-				// Remove duplicate if exists
+				// إزالة الحديث إذا كان موجوداً مسبقاً (لتجنب التكرار)
 				const filtered = items.filter(h => h.id !== hadith.id);
-				// Add to beginning with timestamp
+				
+				// إنشاء مصفوفة جديدة مع الحديث في البداية
+				// وإضافة timestamp للوقت الحالي
 				const newItems = [
 					{ ...hadith, viewedAt: Date.now() },
 					...filtered
-				].slice(0, MAX_ITEMS);
+				].slice(0, MAX_ITEMS);  // قص المصفوفة للحد الأقصى
+				
+				// حفظ البيانات في localStorage
 				persist(newItems);
+				
+				// إرجاع المصفوفة الجديدة
 				return newItems;
 			});
 		},
 		
+		/**
+		 * حذف حديث من السجل
+		 * @param id - معرف الحديث المراد حذفه
+		 */
 		remove: (id: string) => {
 			update(items => {
+				// فلترة المصفوفة لإزالة الحديث المحدد
 				const newItems = items.filter(h => h.id !== id);
+				
+				// حفظ البيانات المحدثة
 				persist(newItems);
+				
+				// إرجاع المصفوفة الجديدة
 				return newItems;
 			});
 		},
 		
+		/**
+		 * مسح جميع الأحاديث من السجل
+		 * يحذف البيانات من localStorage ويُفرغ المخزن
+		 */
 		clear: () => {
+			// حذف البيانات من localStorage
 			if (browser) {
 				localStorage.removeItem(STORAGE_KEY);
 			}
+			
+			// تعيين المخزن لمصفوفة فارغة
 			set([]);
 		},
 		
-		// Initialize from localStorage (call on mount)
+		/**
+		 * تهيئة المخزن من localStorage
+		 * تُستدعى عند تحميل المكون (onMount)
+		 */
 		init: () => {
 			if (browser) {
+				// جلب البيانات وتعيينها للمخزن
 				const items = getInitial();
 				set(items);
 			}
@@ -79,4 +173,8 @@ function createRecentlyViewedStore() {
 	};
 }
 
+// ============================================================================
+// تصدير المخزن
+// إنشاء نسخة واحدة من المخزن لاستخدامها في كل التطبيق
+// ============================================================================
 export const recentlyViewed = createRecentlyViewedStore();
