@@ -1,31 +1,123 @@
 {
-	"name": "Hadith - Prophetic Wisdom",
-	"short_name": "Hadith",
-	"description": "Search and discover authentic Islamic hadith from trusted collections",
+	"name": "الباحث الحديثي - موسوعة الأحاديث النبوية",
+	"short_name": "الباحث الحديثي",
+	"description": "موسوعة شاملة للأحاديث النبوية من الكتب الستة الصحيحة - ابحث في أكثر من 50,000 حديث",
 	"start_url": "/",
+	"scope": "/",
 	"display": "standalone",
-	"background_color": "#fafafa",
-	"theme_color": "#1e3a5f",
+	"background_color": "#f8fafb",
+	"theme_color": "#1B4D3E",
 	"orientation": "portrait-primary",
+	"lang": "ar",
+	"dir": "rtl",
+	"categories": ["education", "books", "reference", "lifestyle"],
 	"icons": [
+		{
+			"src": "/icons/icon-72.png",
+			"sizes": "72x72",
+			"type": "image/png",
+			"purpose": "any"
+		},
+		{
+			"src": "/icons/icon-96.png",
+			"sizes": "96x96",
+			"type": "image/png",
+			"purpose": "any"
+		},
+		{
+			"src": "/icons/icon-128.png",
+			"sizes": "128x128",
+			"type": "image/png",
+			"purpose": "any"
+		},
+		{
+			"src": "/icons/icon-144.png",
+			"sizes": "144x144",
+			"type": "image/png",
+			"purpose": "any"
+		},
+		{
+			"src": "/icons/icon-152.png",
+			"sizes": "152x152",
+			"type": "image/png",
+			"purpose": "any"
+		},
 		{
 			"src": "/icons/icon-192.png",
 			"sizes": "192x192",
-			"type": "image/png"
+			"type": "image/png",
+			"purpose": "any"
 		},
 		{
-			"src": "/icons/icon-512.png",
-			"sizes": "512x512",
-			"type": "image/png"
+			"src": "/icons/icon-384.png",
+			"sizes": "384x384",
+			"type": "image/png",
+			"purpose": "any"
 		},
 		{
 			"src": "/icons/icon-512.png",
 			"sizes": "512x512",
 			"type": "image/png",
+			"purpose": "any"
+		},
+		{
+			"src": "/icons/icon-maskable-192.png",
+			"sizes": "192x192",
+			"type": "image/png",
+			"purpose": "maskable"
+		},
+		{
+			"src": "/icons/icon-maskable-512.png",
+			"sizes": "512x512",
+			"type": "image/png",
 			"purpose": "maskable"
 		}
 	],
-	"categories": ["education", "books", "reference"],
-	"lang": "en",
-	"dir": "ltr"
+	"screenshots": [
+		{
+			"src": "/screenshots/home.png",
+			"sizes": "1280x720",
+			"type": "image/png",
+			"form_factor": "wide",
+			"label": "الصفحة الرئيسية"
+		},
+		{
+			"src": "/screenshots/search.png",
+			"sizes": "1280x720",
+			"type": "image/png",
+			"form_factor": "wide",
+			"label": "البحث في الأحاديث"
+		}
+	],
+	"shortcuts": [
+		{
+			"name": "البحث",
+			"short_name": "بحث",
+			"description": "ابحث في الأحاديث",
+			"url": "/search",
+			"icons": [{ "src": "/icons/search-96.png", "sizes": "96x96" }]
+		},
+		{
+			"name": "الكتب",
+			"short_name": "كتب",
+			"description": "تصفح كتب الحديث",
+			"url": "/collections",
+			"icons": [{ "src": "/icons/book-96.png", "sizes": "96x96" }]
+		},
+		{
+			"name": "المواضيع",
+			"short_name": "مواضيع",
+			"description": "تصفح حسب الموضوع",
+			"url": "/topics",
+			"icons": [{ "src": "/icons/topic-96.png", "sizes": "96x96" }]
+		}
+	],
+	"related_applications": [
+		{
+			"platform": "play",
+			"url": "https://play.google.com/store/apps/details?id=com.thedawah.hadith",
+			"id": "com.thedawah.hadith"
+		}
+	],
+	"prefer_related_applications": false
 }

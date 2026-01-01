@@ -3,8 +3,42 @@
 </script>
 
 <svelte:head>
-	<title>عن الباحث الحديثي | sunnah.one</title>
-	<meta name="description" content="تعرف على الباحث الحديثي - باحث فوري بنصوص الأحاديث بجميع رواياتها مع درجة صحتها في الموسوعة الحديثية بالدرر السنية" />
+	<!-- SEO: Primary Meta Tags -->
+	<title>عن الباحث الحديثي - موسوعة الأحاديث النبوية | sunnah.one</title>
+	<meta name="title" content="عن الباحث الحديثي - موسوعة الأحاديث النبوية | sunnah.one" />
+	<meta name="description" content="تعرف على الباحث الحديثي - باحث فوري بنصوص الأحاديث بجميع رواياتها مع درجة صحتها. يضم أكثر من 50,000 حديث من الكتب الستة الصحيحة." />
+	<meta name="keywords" content="عن الباحث الحديثي, موسوعة الحديث, البحث في الأحاديث, الدرر السنية" />
+	
+	<!-- Open Graph -->
+	<meta property="og:title" content="عن الباحث الحديثي - موسوعة الأحاديث النبوية" />
+	<meta property="og:description" content="باحث فوري بنصوص الأحاديث بجميع رواياتها مع درجة صحتها في الموسوعة الحديثية" />
+	<meta property="og:image" content="https://sunnah.one/og-about.png" />
+	
+	<!-- Twitter -->
+	<meta name="twitter:title" content="عن الباحث الحديثي" />
+	<meta name="twitter:description" content="باحث فوري بنصوص الأحاديث بجميع رواياتها مع درجة صحتها" />
+	
+	<!-- Schema.org for About Page -->
+	{@html `<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "AboutPage",
+		"name": "عن الباحث الحديثي",
+		"description": "باحث فوري بنصوص الأحاديث بجميع رواياتها مع درجة صحتها",
+		"url": "https://sunnah.one/about",
+		"mainEntity": {
+			"@type": "SoftwareApplication",
+			"name": "الباحث الحديثي",
+			"applicationCategory": "ReferenceApplication",
+			"operatingSystem": "Web, Android",
+			"offers": {
+				"@type": "Offer",
+				"price": "0",
+				"priceCurrency": "USD"
+			}
+		}
+	}
+	</script>`}
 </svelte:head>
 
 <!-- Hero Section -->

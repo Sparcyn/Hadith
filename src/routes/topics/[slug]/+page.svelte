@@ -125,7 +125,41 @@
 </script>
 
 <svelte:head>
-	<title>{topic.title} - الباحث الحديثي | sunnah.one</title>
+	<!-- SEO: Dynamic Meta Tags -->
+	<title>{topic.title} - أحاديث {topic.title} | sunnah.one</title>
+	<meta name="title" content="{topic.title} - أحاديث {topic.title} | sunnah.one" />
+	<meta name="description" content="{topic.desc} - يحتوي على {topic.count.toLocaleString('ar-EG')} حديث في موضوع {topic.title}." />
+	<meta name="keywords" content="أحاديث {topic.title}, {topic.subtopics.map((s: any) => s.name).join(', ')}" />
+	
+	<!-- Open Graph -->
+	<meta property="og:title" content="{topic.title} - الباحث الحديثي" />
+	<meta property="og:description" content="{topic.desc}" />
+	<meta property="og:image" content="https://sunnah.one/og-topic-{slug}.png" />
+	
+	<!-- Twitter -->
+	<meta name="twitter:title" content="أحاديث {topic.title}" />
+	<meta name="twitter:description" content="{topic.desc}" />
+	
+	<!-- Schema.org for Topic -->
+	{@html `<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "CollectionPage",
+		"name": "أحاديث ${topic.title}",
+		"description": "${topic.desc}",
+		"url": "https://sunnah.one/topics/${slug}",
+		"numberOfItems": ${topic.count},
+		"mainEntity": {
+			"@type": "ItemList",
+			"name": "${topic.title}",
+			"itemListElement": ${JSON.stringify(topic.subtopics.map((s: any, i: number) => ({
+				"@type": "ListItem",
+				"position": i + 1,
+				"name": s.name
+			})))}
+		}
+	}
+	</script>`}
 </svelte:head>
 
 <div class="page-wrapper">

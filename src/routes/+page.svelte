@@ -23,8 +23,50 @@
 </script>
 
 <svelte:head>
+	<!-- SEO: Primary Meta Tags -->
 	<title>الباحث الحديثي - ابحث في السنة النبوية | sunnah.one</title>
-	<meta name="description" content="الباحث الحديثي - موسوعة شاملة للأحاديث النبوية من الكتب الستة الصحيحة" />
+	<meta name="title" content="الباحث الحديثي - ابحث في السنة النبوية | sunnah.one" />
+	<meta name="description" content="الباحث الحديثي - موسوعة شاملة للأحاديث النبوية الشريفة من الكتب الستة الصحيحة: البخاري، مسلم، الترمذي، أبو داود، النسائي، ابن ماجه. ابحث في أكثر من 50,000 حديث." />
+	<meta name="keywords" content="حديث, أحاديث, السنة النبوية, صحيح البخاري, صحيح مسلم, الكتب الستة, hadith, sunnah, bukhari, muslim" />
+	<meta name="author" content="الباحث الحديثي" />
+	
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="الباحث الحديثي - ابحث في السنة النبوية" />
+	<meta property="og:description" content="موسوعة شاملة للأحاديث النبوية من الكتب الستة الصحيحة. ابحث في أكثر من 50,000 حديث نبوي شريف." />
+	<meta property="og:image" content="https://sunnah.one/og-image.png" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:alt" content="الباحث الحديثي - موسوعة الأحاديث النبوية" />
+	
+	<!-- Twitter -->
+	<meta name="twitter:title" content="الباحث الحديثي - ابحث في السنة النبوية" />
+	<meta name="twitter:description" content="موسوعة شاملة للأحاديث النبوية من الكتب الستة الصحيحة" />
+	<meta name="twitter:image" content="https://sunnah.one/og-image.png" />
+	
+	<!-- Schema.org for Homepage -->
+	{@html `<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "WebPage",
+		"name": "الباحث الحديثي - الصفحة الرئيسية",
+		"description": "موسوعة شاملة للأحاديث النبوية من الكتب الستة الصحيحة",
+		"url": "https://sunnah.one",
+		"mainEntity": {
+			"@type": "ItemList",
+			"name": "كتب الحديث الستة",
+			"numberOfItems": 6,
+			"itemListElement": [
+				{"@type": "Book", "position": 1, "name": "صحيح البخاري", "author": "الإمام البخاري"},
+				{"@type": "Book", "position": 2, "name": "صحيح مسلم", "author": "الإمام مسلم"},
+				{"@type": "Book", "position": 3, "name": "جامع الترمذي", "author": "الإمام الترمذي"},
+				{"@type": "Book", "position": 4, "name": "سنن أبي داود", "author": "الإمام أبو داود"},
+				{"@type": "Book", "position": 5, "name": "سنن النسائي", "author": "الإمام النسائي"},
+				{"@type": "Book", "position": 6, "name": "سنن ابن ماجه", "author": "الإمام ابن ماجه"}
+			]
+		}
+	}
+	</script>`}
 </svelte:head>
 
 <HeroSearch />

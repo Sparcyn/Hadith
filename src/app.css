@@ -1,8 +1,7 @@
-/* Premium Arabic Fonts */
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700;800&display=swap');
-
+/* Performance: Critical CSS - Inline fonts with fallbacks */
 @import 'tailwindcss';
 
+/* Performance: Use system fonts as fallback, load custom fonts async */
 :root {
 	--color-primary: #1B4D3E;
 	--color-primary-dark: #0d3d32;
@@ -23,9 +22,10 @@
 	--color-border-light: #f0f4f5;
 	--color-success: #1B4D3E;
 	
-	--font-ui: 'IBM Plex Sans Arabic', 'Tajawal', system-ui, sans-serif;
-	--font-display: 'Tajawal', 'IBM Plex Sans Arabic', system-ui, sans-serif;
-	--font-arabic: 'Amiri', 'Scheherazade New', serif;
+	/* Performance: System font stack with Arabic support */
+	--font-ui: 'Tajawal', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+	--font-display: 'Tajawal', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+	--font-arabic: 'Amiri', 'Traditional Arabic', 'Scheherazade New', serif;
 	
 	--radius: 12px;
 	--radius-lg: 16px;
@@ -40,6 +40,9 @@
 	--shadow-card-hover: 0 12px 40px rgba(27, 77, 62, 0.12), 0 4px 12px rgba(27, 77, 62, 0.06);
 	
 	--header-height: 0px;
+	
+	/* Performance: CSS containment */
+	contain: layout style;
 }
 
 .dark {
@@ -349,4 +352,123 @@ body {
 
 .animate-in {
 	animation: fadeIn 0.3s ease forwards;
+}
+
+
+/* =========================================================================
+   Performance Optimizations
+   ========================================================================= */
+
+/* GPU acceleration for animations */
+.animate-in,
+.card-hover,
+.btn,
+.nav-link {
+	will-change: transform;
+	transform: translateZ(0);
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+/* Content visibility for off-screen content */
+.section {
+	content-visibility: auto;
+	contain-intrinsic-size: auto 500px;
+}
+
+/* Optimize images */
+img {
+	max-width: 100%;
+	height: auto;
+	content-visibility: auto;
+}
+
+/* Lazy loading placeholder */
+img[loading="lazy"] {
+	background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+	background-size: 200% 100%;
+	animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+	0% { background-position: 200% 0; }
+	100% { background-position: -200% 0; }
+}
+
+/* Print styles for SEO (Google considers print CSS) */
+@media print {
+	.header,
+	.footer,
+	.btn,
+	nav {
+		display: none !important;
+	}
+	
+	body {
+		font-size: 12pt;
+		line-height: 1.5;
+		color: #000;
+		background: #fff;
+	}
+	
+	.font-arabic {
+		font-size: 14pt;
+		line-height: 2;
+	}
+	
+	a {
+		color: #000;
+		text-decoration: underline;
+	}
+	
+	a[href^="http"]::after {
+		content: " (" attr(href) ")";
+		font-size: 10pt;
+	}
+}
+
+/* Focus visible for accessibility (SEO factor) */
+:focus-visible {
+	outline: 3px solid var(--color-primary);
+	outline-offset: 2px;
+	border-radius: 4px;
+}
+
+/* Skip link for accessibility */
+.skip-link {
+	position: absolute;
+	top: -40px;
+	left: 0;
+	background: var(--color-primary);
+	color: white;
+	padding: 8px 16px;
+	z-index: 1000;
+	transition: top 0.3s;
+}
+
+.skip-link:focus {
+	top: 0;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+	:root {
+		--color-text: #000;
+		--color-bg: #fff;
+		--color-border: #000;
+	}
+	
+	.btn-primary {
+		border: 2px solid #000;
+	}
 }

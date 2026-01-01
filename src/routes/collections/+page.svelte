@@ -1,18 +1,33 @@
 <script lang="ts">
-	import { BookOpen, Star, ChevronLeft, Search, Sparkles } from 'lucide-svelte';
+	import { BookOpen, Star, ChevronLeft, Search, Sparkles, BookMarked, Users, Calendar } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	
 	let mounted = $state(false);
 	let searchQuery = $state('');
+	let activeFilter = $state('all');
 	
 	const collections = [
-		{ slug: 'bukhari', arabicName: 'صحيح البخاري', arabicAuthor: 'الإمام محمد بن إسماعيل البخاري', hadithCount: 7563, grade: 'صحيح', year: '256 هـ', description: 'أصح كتاب بعد كتاب الله، جمع فيه الإمام البخاري الأحاديث الصحيحة المسندة', color: 'emerald' },
-		{ slug: 'muslim', arabicName: 'صحيح مسلم', arabicAuthor: 'الإمام مسلم بن الحجاج النيسابوري', hadithCount: 7500, grade: 'صحيح', year: '261 هـ', description: 'ثاني أصح كتاب بعد صحيح البخاري، اشترط فيه الإمام مسلم الصحة', color: 'blue' },
-		{ slug: 'tirmidhi', arabicName: 'جامع الترمذي', arabicAuthor: 'الإمام محمد بن عيسى الترمذي', hadithCount: 3956, grade: 'حسن', year: '279 هـ', description: 'من أهم كتب السنن، يتميز ببيان درجة الحديث وذكر مذاهب الفقهاء', color: 'amber' },
-		{ slug: 'abudawud', arabicName: 'سنن أبي داود', arabicAuthor: 'الإمام سليمان بن الأشعث السجستاني', hadithCount: 5274, grade: 'حسن', year: '275 هـ', description: 'من أمهات كتب الحديث، يركز على أحاديث الأحكام الفقهية', color: 'purple' },
-		{ slug: 'nasai', arabicName: 'سنن النسائي', arabicAuthor: 'الإمام أحمد بن شعيب النسائي', hadithCount: 5761, grade: 'حسن', year: '303 هـ', description: 'أقل الكتب الستة ضعفاً بعد الصحيحين، يتميز بدقة التبويب', color: 'rose' },
-		{ slug: 'ibnmajah', arabicName: 'سنن ابن ماجه', arabicAuthor: 'الإمام محمد بن يزيد ابن ماجه', hadithCount: 4341, grade: 'حسن', year: '273 هـ', description: 'سادس الكتب الستة، يحتوي على أحاديث انفرد بها عن بقية الكتب', color: 'cyan' },
+		{ slug: 'bukhari', arabicName: 'صحيح البخاري', arabicAuthor: 'الإمام محمد بن إسماعيل البخاري', hadithCount: 7563, grade: 'صحيح', year: '256 هـ', description: 'أصح كتاب بعد كتاب الله، جمع فيه الإمام البخاري الأحاديث الصحيحة المسندة', color: 'emerald', books: 97, chapters: 3450 },
+		{ slug: 'muslim', arabicName: 'صحيح مسلم', arabicAuthor: 'الإمام مسلم بن الحجاج النيسابوري', hadithCount: 7500, grade: 'صحيح', year: '261 هـ', description: 'ثاني أصح كتاب بعد صحيح البخاري، اشترط فيه الإمام مسلم الصحة', color: 'blue', books: 56, chapters: 1400 },
+		{ slug: 'tirmidhi', arabicName: 'جامع الترمذي', arabicAuthor: 'الإمام محمد بن عيسى الترمذي', hadithCount: 3956, grade: 'حسن', year: '279 هـ', description: 'من أهم كتب السنن، يتميز ببيان درجة الحديث وذكر مذاهب الفقهاء', color: 'amber', books: 50, chapters: 2000 },
+		{ slug: 'abudawud', arabicName: 'سنن أبي داود', arabicAuthor: 'الإمام سليمان بن الأشعث السجستاني', hadithCount: 5274, grade: 'حسن', year: '275 هـ', description: 'من أمهات كتب الحديث، يركز على أحاديث الأحكام الفقهية', color: 'purple', books: 43, chapters: 1871 },
+		{ slug: 'nasai', arabicName: 'سنن النسائي', arabicAuthor: 'الإمام أحمد بن شعيب النسائي', hadithCount: 5761, grade: 'حسن', year: '303 هـ', description: 'أقل الكتب الستة ضعفاً بعد الصحيحين، يتميز بدقة التبويب', color: 'rose', books: 51, chapters: 2400 },
+		{ slug: 'ibnmajah', arabicName: 'سنن ابن ماجه', arabicAuthor: 'الإمام محمد بن يزيد ابن ماجه', hadithCount: 4341, grade: 'حسن', year: '273 هـ', description: 'سادس الكتب الستة، يحتوي على أحاديث انفرد بها عن بقية الكتب', color: 'cyan', books: 37, chapters: 1500 },
 	];
+	
+	const filters = [
+		{ id: 'all', label: 'الكل' },
+		{ id: 'sahih', label: 'الصحيحان' },
+		{ id: 'sunan', label: 'السنن' },
+	];
+	
+	let filteredCollections = $derived(
+		activeFilter === 'all' ? collections :
+		activeFilter === 'sahih' ? collections.filter(c => c.grade === 'صحيح') :
+		collections.filter(c => c.grade === 'حسن')
+	);
+	
+	let totalHadith = $derived(collections.reduce((sum, c) => sum + c.hadithCount, 0));
 	
 	const colorMap: Record<string, { gradient: string; light: string; border: string }> = {
 		emerald: { gradient: 'from-emerald-500 to-teal-600', light: 'rgba(16, 185, 129, 0.1)', border: 'rgba(16, 185, 129, 0.2)' },
@@ -35,8 +50,44 @@
 </script>
 
 <svelte:head>
-	<title>كتب الحديث - الباحث الحديثي | sunnah.one</title>
-	<meta name="description" content="تصفح أصح كتب الحديث النبوي الشريف - الكتب الستة" />
+	<!-- SEO: Primary Meta Tags -->
+	<title>كتب الحديث الستة - صحيح البخاري ومسلم والسنن | sunnah.one</title>
+	<meta name="title" content="كتب الحديث الستة - صحيح البخاري ومسلم والسنن | sunnah.one" />
+	<meta name="description" content="تصفح أصح كتب الحديث النبوي الشريف: صحيح البخاري، صحيح مسلم، جامع الترمذي، سنن أبي داود، سنن النسائي، سنن ابن ماجه. أكثر من 34,000 حديث." />
+	<meta name="keywords" content="كتب الحديث, الكتب الستة, صحيح البخاري, صحيح مسلم, السنن الأربعة, hadith books" />
+	
+	<!-- Open Graph -->
+	<meta property="og:title" content="كتب الحديث الستة - الباحث الحديثي" />
+	<meta property="og:description" content="تصفح أصح كتب الحديث النبوي الشريف - الكتب الستة الصحيحة" />
+	<meta property="og:image" content="https://sunnah.one/og-collections.png" />
+	
+	<!-- Twitter -->
+	<meta name="twitter:title" content="كتب الحديث الستة" />
+	<meta name="twitter:description" content="تصفح أصح كتب الحديث النبوي الشريف" />
+	
+	<!-- Schema.org for Collections -->
+	{@html `<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "CollectionPage",
+		"name": "كتب الحديث الستة",
+		"description": "أصح كتب الحديث النبوي الشريف التي اعتمدها العلماء",
+		"url": "https://sunnah.one/collections",
+		"mainEntity": {
+			"@type": "ItemList",
+			"name": "الكتب الستة",
+			"numberOfItems": 6,
+			"itemListElement": [
+				{"@type": "ListItem", "position": 1, "name": "صحيح البخاري", "url": "https://sunnah.one/collections/bukhari"},
+				{"@type": "ListItem", "position": 2, "name": "صحيح مسلم", "url": "https://sunnah.one/collections/muslim"},
+				{"@type": "ListItem", "position": 3, "name": "جامع الترمذي", "url": "https://sunnah.one/collections/tirmidhi"},
+				{"@type": "ListItem", "position": 4, "name": "سنن أبي داود", "url": "https://sunnah.one/collections/abudawud"},
+				{"@type": "ListItem", "position": 5, "name": "سنن النسائي", "url": "https://sunnah.one/collections/nasai"},
+				{"@type": "ListItem", "position": 6, "name": "سنن ابن ماجه", "url": "https://sunnah.one/collections/ibnmajah"}
+			]
+		}
+	}
+	</script>`}
 </svelte:head>
 
 <div class="page-wrapper">
@@ -66,6 +117,40 @@
 						class="search-input"
 					/>
 				</div>
+				
+				<!-- Filter Tabs -->
+				<div class="filter-tabs">
+					{#each filters as filter}
+						<button 
+							class="filter-tab" 
+							class:active={activeFilter === filter.id}
+							onclick={() => activeFilter = filter.id}
+						>
+							{filter.label}
+						</button>
+					{/each}
+				</div>
+				
+				<!-- Stats Row -->
+				<div class="hero-stats">
+					<div class="hero-stat">
+						<BookMarked class="w-5 h-5 text-amber-400" />
+						<span class="hero-stat-value">٦</span>
+						<span class="hero-stat-label">كتب</span>
+					</div>
+					<div class="hero-stat-divider"></div>
+					<div class="hero-stat">
+						<Users class="w-5 h-5 text-emerald-400" />
+						<span class="hero-stat-value">+٣٤ ألف</span>
+						<span class="hero-stat-label">حديث</span>
+					</div>
+					<div class="hero-stat-divider"></div>
+					<div class="hero-stat">
+						<Calendar class="w-5 h-5 text-blue-400" />
+						<span class="hero-stat-value">٣ هـ</span>
+						<span class="hero-stat-label">القرن</span>
+					</div>
+				</div>
 			</div>
 		</div>
 		
@@ -76,8 +161,14 @@
 	<!-- Collections Grid -->
 	<section class="collections-section">
 		<div class="container">
+			<!-- Section Header -->
+			<div class="section-header fade-in" class:visible={mounted}>
+				<h2 class="section-title">الكتب الستة</h2>
+				<p class="section-desc">أصح كتب الحديث النبوي التي اعتمدها أهل العلم</p>
+			</div>
+			
 			<div class="collections-grid">
-				{#each collections as book, i}
+				{#each filteredCollections as book, i}
 					{@const colors = colorMap[book.color]}
 					<a 
 						href="/collections/{book.slug}" 
@@ -87,6 +178,9 @@
 					>
 						<!-- Decorative Corner -->
 						<div class="card-corner"></div>
+						
+						<!-- Rank Badge -->
+						<div class="rank-badge">{i + 1}</div>
 						
 						<!-- Header -->
 						<div class="card-header">
@@ -110,6 +204,18 @@
 							<h2 class="card-title">{book.arabicName}</h2>
 							<p class="card-author">{book.arabicAuthor}</p>
 							<p class="card-desc">{book.description}</p>
+						</div>
+						
+						<!-- Mini Stats -->
+						<div class="mini-stats">
+							<div class="mini-stat">
+								<span class="mini-stat-value">{book.books}</span>
+								<span class="mini-stat-label">كتاب</span>
+							</div>
+							<div class="mini-stat">
+								<span class="mini-stat-value">{book.chapters}</span>
+								<span class="mini-stat-label">باب</span>
+							</div>
 						</div>
 						
 						<!-- Footer -->
@@ -148,7 +254,7 @@
 	/* Hero */
 	.hero {
 		position: relative;
-		padding: 160px 0 80px;
+		padding: 160px 0 100px;
 		background: linear-gradient(165deg, #0a2e25 0%, #1a5f4f 40%, #0d3d32 100%);
 		overflow: hidden;
 	}
@@ -231,7 +337,7 @@
 	
 	.search-box {
 		max-width: 500px;
-		margin: 0 auto;
+		margin: 0 auto 24px;
 		position: relative;
 	}
 	
@@ -264,6 +370,68 @@
 		box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
 	}
 	
+	/* Filter Tabs */
+	.filter-tabs {
+		display: flex;
+		justify-content: center;
+		gap: 12px;
+		margin-bottom: 32px;
+	}
+	
+	.filter-tab {
+		padding: 12px 28px;
+		background: rgba(255,255,255,0.08);
+		border: 1px solid rgba(255,255,255,0.15);
+		border-radius: 50px;
+		font-size: 15px;
+		font-weight: 600;
+		color: rgba(255,255,255,0.7);
+		cursor: pointer;
+		transition: all 0.3s ease;
+	}
+	.filter-tab:hover {
+		background: rgba(255,255,255,0.12);
+		color: white;
+	}
+	.filter-tab.active {
+		background: linear-gradient(135deg, #d4af37, #c9a432);
+		border-color: transparent;
+		color: #1a1a1a;
+		box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+	}
+	
+	/* Hero Stats */
+	.hero-stats {
+		display: inline-flex;
+		align-items: center;
+		gap: 24px;
+		padding: 16px 32px;
+		background: rgba(255,255,255,0.05);
+		border: 1px solid rgba(255,255,255,0.1);
+		border-radius: 60px;
+		backdrop-filter: blur(10px);
+	}
+	
+	.hero-stat {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+	.hero-stat-value {
+		font-size: 1.25rem;
+		font-weight: 700;
+		color: white;
+	}
+	.hero-stat-label {
+		font-size: 13px;
+		color: rgba(255,255,255,0.6);
+	}
+	.hero-stat-divider {
+		width: 1px;
+		height: 32px;
+		background: rgba(255,255,255,0.15);
+	}
+	
 	.hero-border {
 		position: absolute;
 		bottom: 0;
@@ -277,6 +445,22 @@
 	@keyframes borderFlow {
 		0% { background-position: 0% 0%; }
 		100% { background-position: 200% 0%; }
+	}
+	
+	/* Section Header */
+	.section-header {
+		text-align: center;
+		margin-bottom: 48px;
+	}
+	.section-title {
+		font-size: 2rem;
+		font-weight: 700;
+		color: #111827;
+		margin-bottom: 8px;
+	}
+	.section-desc {
+		font-size: 1rem;
+		color: #6b7280;
 	}
 	
 	/* Collections Section */
@@ -313,9 +497,26 @@
 		box-shadow: 0 32px 64px rgba(0,0,0,0.12), 0 0 0 1px var(--card-border);
 	}
 	
-	/* RTL Support */
-	:global([dir="rtl"]) .card-action {
-		flex-direction: row-reverse;
+	/* Rank Badge */
+	.rank-badge {
+		position: absolute;
+		top: 20px;
+		left: 20px;
+		width: 32px;
+		height: 32px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: #f3f4f6;
+		border-radius: 50%;
+		font-size: 14px;
+		font-weight: 700;
+		color: #9ca3af;
+		transition: all 0.3s ease;
+	}
+	.collection-card:hover .rank-badge {
+		background: var(--card-light);
+		color: #1a5f4f;
 	}
 	
 	.card-corner {
@@ -413,12 +614,38 @@
 		line-height: 1.7;
 	}
 	
+	/* Mini Stats */
+	.mini-stats {
+		display: flex;
+		gap: 16px;
+		margin-top: 16px;
+		padding: 12px 16px;
+		background: #f9fafb;
+		border-radius: 12px;
+		position: relative;
+		z-index: 1;
+	}
+	.mini-stat {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+	}
+	.mini-stat-value {
+		font-size: 14px;
+		font-weight: 700;
+		color: #374151;
+	}
+	.mini-stat-label {
+		font-size: 13px;
+		color: #9ca3af;
+	}
+	
 	.card-footer {
 		position: relative;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		margin-top: 24px;
+		margin-top: 20px;
 		padding-top: 20px;
 		border-top: 1px solid #f3f4f6;
 		z-index: 1;

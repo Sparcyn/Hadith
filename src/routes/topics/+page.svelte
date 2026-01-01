@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { ChevronLeft, Search, Sparkles } from 'lucide-svelte';
+	import { ChevronLeft, Search, Sparkles, TrendingUp, Hash, Layers } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	
 	let mounted = $state(false);
 	let searchQuery = $state('');
 	let hoveredTopic = $state<string | null>(null);
+	let viewMode = $state<'grid' | 'list'>('grid');
 	
 	const topics = [
 		{ 
@@ -14,7 +15,9 @@
 			desc: 'الصلاة، الصيام، الزكاة، الحج', 
 			count: 12847, 
 			gradient: 'from-emerald-400 via-teal-500 to-cyan-600',
-			subtopics: ['الصلاة', 'الصيام', 'الزكاة', 'الحج', 'الطهارة', 'الذكر']
+			lightBg: 'rgba(16, 185, 129, 0.08)',
+			subtopics: ['الصلاة', 'الصيام', 'الزكاة', 'الحج', 'الطهارة', 'الذكر'],
+			trending: true
 		},
 		{ 
 			slug: 'transactions', 
@@ -23,7 +26,9 @@
 			desc: 'البيع، الزواج، الميراث، العقود', 
 			count: 8234, 
 			gradient: 'from-blue-400 via-indigo-500 to-violet-600',
-			subtopics: ['البيع والشراء', 'الزواج', 'الميراث', 'الإجارة', 'الوقف']
+			lightBg: 'rgba(59, 130, 246, 0.08)',
+			subtopics: ['البيع والشراء', 'الزواج', 'الميراث', 'الإجارة', 'الوقف'],
+			trending: false
 		},
 		{ 
 			slug: 'ethics', 
@@ -32,7 +37,9 @@
 			desc: 'الصدق، الصبر، الإحسان، التواضع', 
 			count: 6891, 
 			gradient: 'from-violet-400 via-purple-500 to-fuchsia-600',
-			subtopics: ['الصدق', 'الصبر', 'الإحسان', 'التواضع', 'الكرم', 'العفو']
+			lightBg: 'rgba(139, 92, 246, 0.08)',
+			subtopics: ['الصدق', 'الصبر', 'الإحسان', 'التواضع', 'الكرم', 'العفو'],
+			trending: true
 		},
 		{ 
 			slug: 'softening', 
@@ -41,7 +48,9 @@
 			desc: 'الموت، الجنة، النار، القيامة', 
 			count: 4523, 
 			gradient: 'from-rose-400 via-pink-500 to-red-600',
-			subtopics: ['الموت', 'الجنة', 'النار', 'القيامة', 'التوبة', 'الخشوع']
+			lightBg: 'rgba(244, 63, 94, 0.08)',
+			subtopics: ['الموت', 'الجنة', 'النار', 'القيامة', 'التوبة', 'الخشوع'],
+			trending: false
 		},
 		{ 
 			slug: 'rulings', 
@@ -50,7 +59,9 @@
 			desc: 'الحلال، الحرام، الفتاوى الشرعية', 
 			count: 5167, 
 			gradient: 'from-amber-400 via-orange-500 to-red-500',
-			subtopics: ['الحلال والحرام', 'القضاء', 'الحدود', 'الجهاد', 'الأيمان']
+			lightBg: 'rgba(245, 158, 11, 0.08)',
+			subtopics: ['الحلال والحرام', 'القضاء', 'الحدود', 'الجهاد', 'الأيمان'],
+			trending: false
 		},
 		{ 
 			slug: 'virtues', 
@@ -59,9 +70,14 @@
 			desc: 'فضائل الأعمال والأوقات والأماكن', 
 			count: 7234, 
 			gradient: 'from-cyan-400 via-blue-500 to-indigo-600',
-			subtopics: ['فضل الصلاة', 'فضل الصيام', 'فضل القرآن', 'فضل الذكر', 'فضل الجمعة']
+			lightBg: 'rgba(6, 182, 212, 0.08)',
+			subtopics: ['فضل الصلاة', 'فضل الصيام', 'فضل القرآن', 'فضل الذكر', 'فضل الجمعة'],
+			trending: true
 		},
 	];
+	
+	let totalHadith = $derived(topics.reduce((sum, t) => sum + t.count, 0));
+	let totalSubtopics = $derived(topics.reduce((sum, t) => sum + t.subtopics.length, 0));
 	
 	function formatNum(n: number): string {
 		return n.toLocaleString('ar-EG');
@@ -71,8 +87,44 @@
 </script>
 
 <svelte:head>
-	<title>المواضيع - الباحث الحديثي | sunnah.one</title>
-	<meta name="description" content="تصفح الأحاديث النبوية مصنفة حسب المواضيع" />
+	<!-- SEO: Primary Meta Tags -->
+	<title>المواضيع - تصفح الأحاديث حسب الموضوع | sunnah.one</title>
+	<meta name="title" content="المواضيع - تصفح الأحاديث حسب الموضوع | sunnah.one" />
+	<meta name="description" content="تصفح الأحاديث النبوية مصنفة حسب المواضيع: العبادات، المعاملات، الأخلاق، الرقائق، الأحكام، الفضائل. أكثر من 44,000 حديث مصنف." />
+	<meta name="keywords" content="مواضيع الأحاديث, تصنيف الأحاديث, أحاديث العبادات, أحاديث الأخلاق, hadith topics" />
+	
+	<!-- Open Graph -->
+	<meta property="og:title" content="المواضيع - تصفح الأحاديث حسب الموضوع" />
+	<meta property="og:description" content="استكشف الأحاديث النبوية الشريفة مصنفة حسب مواضيع الحياة المختلفة" />
+	<meta property="og:image" content="https://sunnah.one/og-topics.png" />
+	
+	<!-- Twitter -->
+	<meta name="twitter:title" content="المواضيع - الباحث الحديثي" />
+	<meta name="twitter:description" content="تصفح الأحاديث النبوية مصنفة حسب المواضيع" />
+	
+	<!-- Schema.org for Topics -->
+	{@html `<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "CollectionPage",
+		"name": "مواضيع الأحاديث النبوية",
+		"description": "تصفح الأحاديث النبوية مصنفة حسب المواضيع",
+		"url": "https://sunnah.one/topics",
+		"mainEntity": {
+			"@type": "ItemList",
+			"name": "مواضيع الأحاديث",
+			"numberOfItems": 6,
+			"itemListElement": [
+				{"@type": "ListItem", "position": 1, "name": "العبادات", "url": "https://sunnah.one/topics/worship"},
+				{"@type": "ListItem", "position": 2, "name": "المعاملات", "url": "https://sunnah.one/topics/transactions"},
+				{"@type": "ListItem", "position": 3, "name": "الأخلاق", "url": "https://sunnah.one/topics/ethics"},
+				{"@type": "ListItem", "position": 4, "name": "الرقائق", "url": "https://sunnah.one/topics/softening"},
+				{"@type": "ListItem", "position": 5, "name": "الأحكام", "url": "https://sunnah.one/topics/rulings"},
+				{"@type": "ListItem", "position": 6, "name": "الفضائل", "url": "https://sunnah.one/topics/virtues"}
+			]
+		}
+	}
+	</script>`}
 </svelte:head>
 
 <div class="page-wrapper">
@@ -108,11 +160,19 @@
 				<!-- Stats -->
 				<div class="hero-stats">
 					<div class="hero-stat">
+						<Layers class="w-5 h-5 text-pink-400" />
 						<span class="hero-stat-value">٦</span>
 						<span class="hero-stat-label">أقسام رئيسية</span>
 					</div>
 					<div class="hero-stat-divider"></div>
 					<div class="hero-stat">
+						<Hash class="w-5 h-5 text-amber-400" />
+						<span class="hero-stat-value">{totalSubtopics}</span>
+						<span class="hero-stat-label">موضوع فرعي</span>
+					</div>
+					<div class="hero-stat-divider"></div>
+					<div class="hero-stat">
+						<TrendingUp class="w-5 h-5 text-emerald-400" />
 						<span class="hero-stat-value">+٤٤ ألف</span>
 						<span class="hero-stat-label">حديث مصنف</span>
 					</div>
@@ -127,18 +187,32 @@
 	<!-- Topics Grid -->
 	<section class="topics-section">
 		<div class="container">
+			<!-- Section Header -->
+			<div class="section-header fade-in" class:visible={mounted}>
+				<h2 class="section-title">استكشف المواضيع</h2>
+				<p class="section-desc">اختر الموضوع الذي تريد التعمق فيه</p>
+			</div>
+			
 			<div class="topics-grid">
 				{#each topics as topic, i}
 					<a 
 						href="/topics/{topic.slug}" 
 						class="topic-card fade-in" 
 						class:visible={mounted}
-						style="transition-delay: {0.1 + i * 0.1}s"
+						style="transition-delay: {0.1 + i * 0.1}s; --light-bg: {topic.lightBg}"
 						onmouseenter={() => hoveredTopic = topic.slug}
 						onmouseleave={() => hoveredTopic = null}
 					>
 						<!-- Background Gradient -->
 						<div class="card-bg bg-gradient-to-br {topic.gradient}"></div>
+						
+						<!-- Trending Badge -->
+						{#if topic.trending}
+							<div class="trending-badge">
+								<TrendingUp class="w-3.5 h-3.5" />
+								<span>رائج</span>
+							</div>
+						{/if}
 						
 						<!-- Floating Particles -->
 						<div class="particles">
@@ -356,13 +430,14 @@
 	}
 	
 	.hero-stat {
-		text-align: center;
+		display: flex;
+		align-items: center;
+		gap: 10px;
 	}
 	.hero-stat-value {
-		display: block;
-		font-size: 1.5rem;
+		font-size: 1.25rem;
 		font-weight: 700;
-		color: #d4af37;
+		color: white;
 	}
 	.hero-stat-label {
 		font-size: 13px;
@@ -372,6 +447,22 @@
 		width: 1px;
 		height: 40px;
 		background: rgba(255,255,255,0.15);
+	}
+	
+	/* Section Header */
+	.section-header {
+		text-align: center;
+		margin-bottom: 48px;
+	}
+	.section-title {
+		font-size: 2rem;
+		font-weight: 700;
+		color: #111827;
+		margin-bottom: 8px;
+	}
+	.section-desc {
+		font-size: 1rem;
+		color: #6b7280;
 	}
 	
 	.hero-border {
@@ -416,10 +507,34 @@
 		overflow: hidden;
 		transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 		box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+		border: 1px solid #f3f4f6;
 	}
 	.topic-card:hover {
 		transform: translateY(-16px) scale(1.02);
 		box-shadow: 0 40px 80px rgba(0,0,0,0.15);
+		border-color: transparent;
+	}
+	
+	/* Trending Badge */
+	.trending-badge {
+		position: absolute;
+		top: 20px;
+		left: 20px;
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		padding: 6px 12px;
+		background: linear-gradient(135deg, #fef3c7, #fde68a);
+		border-radius: 50px;
+		font-size: 12px;
+		font-weight: 600;
+		color: #92400e;
+		z-index: 2;
+		transition: all 0.3s ease;
+	}
+	.topic-card:hover .trending-badge {
+		background: rgba(255,255,255,0.2);
+		color: white;
 	}
 	
 	.card-bg {

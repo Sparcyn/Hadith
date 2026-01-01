@@ -4,8 +4,12 @@
 	import Footer from '$components/layout/Footer.svelte';
 	import { theme } from '$stores';
 	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 	
 	let { children } = $props();
+	
+	// Derive canonical URL
+	let canonicalUrl = $derived(`https://sunnah.one${$page.url.pathname}`);
 	
 	onMount(() => {
 		const stored = localStorage.getItem('theme') as 'light' | 'dark' | 'sepia' | null;
@@ -14,20 +18,60 @@
 </script>
 
 <svelte:head>
-	<!-- Performance: Optimized font loading with display=swap -->
-	<link rel="preload" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" as="style" />
-	<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-	<noscript>
-		<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet" />
-	</noscript>
+	<!-- SEO: Canonical URL (prevents duplicate content) -->
+	<link rel="canonical" href={canonicalUrl} />
 	
-	<!-- SEO: Default page title -->
-	<title>الباحث الحديثي - موسوعة الأحاديث النبوية</title>
+	<!-- SEO: Language alternates -->
+	<link rel="alternate" hreflang="ar" href={canonicalUrl} />
+	<link rel="alternate" hreflang="x-default" href={canonicalUrl} />
+	
+	<!-- Open Graph (Facebook, LinkedIn, etc.) -->
+	<meta property="og:site_name" content="الباحث الحديثي - sunnah.one" />
+	<meta property="og:locale" content="ar_SA" />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content={canonicalUrl} />
+	
+	<!-- Twitter Card -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:site" content="@sunnahone" />
+	
+	<!-- Schema.org JSON-LD for Organization -->
+	{@html `<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "WebSite",
+		"name": "الباحث الحديثي",
+		"alternateName": "sunnah.one",
+		"url": "https://sunnah.one",
+		"description": "موسوعة شاملة للأحاديث النبوية من الكتب الستة الصحيحة",
+		"inLanguage": "ar",
+		"potentialAction": {
+			"@type": "SearchAction",
+			"target": {
+				"@type": "EntryPoint",
+				"urlTemplate": "https://sunnah.one/search?q={search_term_string}"
+			},
+			"query-input": "required name=search_term_string"
+		},
+		"publisher": {
+			"@type": "Organization",
+			"name": "الباحث الحديثي",
+			"url": "https://sunnah.one",
+			"logo": {
+				"@type": "ImageObject",
+				"url": "https://sunnah.one/logo.png"
+			}
+		}
+	}
+	</script>`}
 </svelte:head>
 
 <div class="min-h-screen flex flex-col" dir="rtl">
+	<!-- Accessibility: Skip to main content link -->
+	<a href="#main-content" class="skip-link">تخطي إلى المحتوى الرئيسي</a>
+	
 	<Header />
-	<main class="flex-1">
+	<main id="main-content" class="flex-1" role="main">
 		{@render children()}
 	</main>
 	<Footer />

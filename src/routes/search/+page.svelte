@@ -37,7 +37,20 @@
 </script>
 
 <svelte:head>
-	<title>{query ? `نتائج: ${query}` : 'البحث'} | موسوعة الحديث</title>
+	<!-- SEO: Dynamic Meta Tags -->
+	<title>{query ? `نتائج البحث: ${query}` : 'البحث في الأحاديث'} | sunnah.one</title>
+	<meta name="title" content="{query ? `نتائج البحث: ${query}` : 'البحث في الأحاديث'} | sunnah.one" />
+	<meta name="description" content="ابحث في أكثر من 50,000 حديث نبوي شريف من الكتب الستة الصحيحة. بحث فوري ودقيق في نصوص الأحاديث." />
+	<meta name="keywords" content="بحث الأحاديث, البحث في السنة, search hadith, hadith search" />
+	
+	<!-- Prevent indexing of search results pages -->
+	{#if query}
+		<meta name="robots" content="noindex, follow" />
+	{/if}
+	
+	<!-- Open Graph -->
+	<meta property="og:title" content="البحث في الأحاديث - الباحث الحديثي" />
+	<meta property="og:description" content="ابحث في أكثر من 50,000 حديث نبوي شريف" />
 </svelte:head>
 
 <section class="section">

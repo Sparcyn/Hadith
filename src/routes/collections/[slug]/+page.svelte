@@ -109,7 +109,39 @@
 </script>
 
 <svelte:head>
+	<!-- SEO: Dynamic Meta Tags -->
 	<title>{collection.arabicName} - الباحث الحديثي | sunnah.one</title>
+	<meta name="title" content="{collection.arabicName} - الباحث الحديثي | sunnah.one" />
+	<meta name="description" content="{collection.description} - يحتوي على {collection.hadithCount.toLocaleString('ar-EG')} حديث. تأليف {collection.arabicAuthor}." />
+	<meta name="keywords" content="{collection.arabicName}, {collection.arabicAuthor}, أحاديث {slug}, hadith {slug}" />
+	
+	<!-- Open Graph -->
+	<meta property="og:title" content="{collection.arabicName} - الباحث الحديثي" />
+	<meta property="og:description" content="{collection.description}" />
+	<meta property="og:image" content="https://sunnah.one/og-{slug}.png" />
+	
+	<!-- Twitter -->
+	<meta name="twitter:title" content="{collection.arabicName}" />
+	<meta name="twitter:description" content="{collection.description}" />
+	
+	<!-- Schema.org for Book -->
+	{@html `<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "Book",
+		"name": "${collection.arabicName}",
+		"author": {
+			"@type": "Person",
+			"name": "${collection.arabicAuthor}"
+		},
+		"description": "${collection.description}",
+		"url": "https://sunnah.one/collections/${slug}",
+		"inLanguage": "ar",
+		"genre": "Religious text",
+		"numberOfPages": ${collection.hadithCount},
+		"datePublished": "${collection.year}"
+	}
+	</script>`}
 </svelte:head>
 
 <div class="page-wrapper">

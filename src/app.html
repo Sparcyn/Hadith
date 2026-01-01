@@ -2,47 +2,44 @@
 <html lang="ar" dir="rtl">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 		
-		<!-- Performance: Preconnect to external domains -->
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<!-- Performance: DNS Prefetch & Preconnect -->
+		<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+		<link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		
-		<!-- SEO Meta Tags -->
-		<meta name="description" content="الباحث الحديثي - موسوعة شاملة للأحاديث النبوية الشريفة. ابحث في صحيح البخاري ومسلم والترمذي وغيرها." />
-		<meta name="keywords" content="حديث, أحاديث, السنة النبوية, البخاري, مسلم, الترمذي, hadith, sunnah" />
-		<meta name="author" content="الباحث الحديثي" />
+		<!-- Performance: Preload critical fonts -->
+		<link rel="preload" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" as="style" />
+		<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+		<noscript><link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet" /></noscript>
 		
-		<!-- Open Graph / Social Media -->
-		<meta property="og:type" content="website" />
-		<meta property="og:title" content="الباحث الحديثي - موسوعة الأحاديث النبوية" />
-		<meta property="og:description" content="ابحث واكتشف في أكبر كتب الحديث النبوي الشريف" />
-		<meta property="og:locale" content="ar_SA" />
-		
-		<!-- Twitter Card -->
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content="الباحث الحديثي" />
-		<meta name="twitter:description" content="موسوعة شاملة للأحاديث النبوية الشريفة" />
-		
-		<!-- Theme Color for Mobile Browsers -->
-		<meta name="theme-color" content="#1B4D3E" />
+		<!-- SEO: Essential Meta Tags -->
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+		<meta name="googlebot" content="index, follow" />
+		<meta name="theme-color" content="#1B4D3E" media="(prefers-color-scheme: light)" />
+		<meta name="theme-color" content="#0a1214" media="(prefers-color-scheme: dark)" />
+		<meta name="color-scheme" content="light dark" />
+		<meta name="format-detection" content="telephone=no" />
+		<meta name="mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		<meta name="apple-mobile-web-app-title" content="الباحث الحديثي" />
+		<meta name="application-name" content="الباحث الحديثي" />
 		<meta name="msapplication-TileColor" content="#1B4D3E" />
+		<meta name="msapplication-config" content="/browserconfig.xml" />
 		
-		<!-- Performance: DNS Prefetch -->
-		<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+		<!-- Favicons -->
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="manifest" href="/manifest.json" />
 		
 		%sveltekit.head%
-		
-		<!-- Prevent FOUC (Flash of Unstyled Content) for theme -->
-		<script>
-			(function() {
-				const theme = localStorage.getItem('theme');
-				if (theme === 'dark') document.documentElement.classList.add('dark');
-				else if (theme === 'sepia') document.documentElement.classList.add('sepia');
-			})();
-		</script>
 	</head>
-	<body data-sveltekit-preload-data="hover">
+	<body data-sveltekit-preload-data="hover" data-sveltekit-preload-code="eager">
 		<div style="display: contents">%sveltekit.body%</div>
 	</body>
 </html>

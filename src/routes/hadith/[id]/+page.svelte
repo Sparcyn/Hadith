@@ -352,3 +352,62 @@
 		});
 	});
 </script>
+
+<svelte:head>
+	<!-- SEO: Dynamic Meta Tags for Hadith -->
+	<title>{hadith.arabicText.slice(0, 50)}... - {collection.arabicName} | sunnah.one</title>
+	<meta name="title" content="{hadith.arabicText.slice(0, 60)}... - {collection.arabicName}" />
+	<meta name="description" content="{hadith.arabicText.slice(0, 150)}... - الراوي: {hadith.narrator} - المصدر: {collection.arabicName} - الحكم: {hadith.hadithGrade}" />
+	<meta name="keywords" content="{hadith.topics?.join(', ')}, {collection.arabicName}, {hadith.narrator}, حديث نبوي" />
+	
+	<!-- Open Graph -->
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="{hadith.arabicText.slice(0, 60)}..." />
+	<meta property="og:description" content="الراوي: {hadith.narrator} | المصدر: {collection.arabicName}" />
+	<meta property="og:image" content="https://sunnah.one/og-hadith.png" />
+	<meta property="article:section" content="{hadith.chapter}" />
+	<meta property="article:tag" content="{hadith.topics?.join(',')}" />
+	
+	<!-- Twitter -->
+	<meta name="twitter:title" content="{hadith.arabicText.slice(0, 60)}..." />
+	<meta name="twitter:description" content="الراوي: {hadith.narrator} | {collection.arabicName}" />
+	
+	<!-- Schema.org for Hadith (Quotation) -->
+	{@html `<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "Quotation",
+		"text": "${hadith.arabicText.replace(/"/g, '\\"')}",
+		"spokenByCharacter": {
+			"@type": "Person",
+			"name": "النبي محمد ﷺ"
+		},
+		"creator": {
+			"@type": "Person",
+			"name": "${hadith.narrator}"
+		},
+		"isPartOf": {
+			"@type": "Book",
+			"name": "${collection.arabicName}",
+			"author": "${collection.arabicAuthor}"
+		},
+		"url": "https://sunnah.one/hadith/${hadithId}",
+		"inLanguage": "ar",
+		"about": ${JSON.stringify(hadith.topics || [])}
+	}
+	</script>`}
+	
+	<!-- BreadcrumbList for SEO -->
+	{@html `<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "BreadcrumbList",
+		"itemListElement": [
+			{"@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://sunnah.one"},
+			{"@type": "ListItem", "position": 2, "name": "الكتب", "item": "https://sunnah.one/collections"},
+			{"@type": "ListItem", "position": 3, "name": "${collection.arabicName}", "item": "https://sunnah.one/collections/${collectionSlug}"},
+			{"@type": "ListItem", "position": 4, "name": "حديث ${hadith.number}"}
+		]
+	}
+	</script>`}
+</svelte:head>

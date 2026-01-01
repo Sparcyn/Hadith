@@ -1,3 +1,21 @@
-# allow crawling everything by default
+# Robots.txt for sunnah.one
+# https://sunnah.one
+
 User-agent: *
-Disallow:
+Allow: /
+
+# Disallow search results (dynamic content)
+Disallow: /search?*
+
+# Allow important crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Sitemap location
+Sitemap: https://sunnah.one/sitemap.xml
