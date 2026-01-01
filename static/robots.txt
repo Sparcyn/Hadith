@@ -1,21 +1,90 @@
 # Robots.txt for sunnah.one
 # https://sunnah.one
+# Last updated: 2025
 
+# Default rules for all crawlers
 User-agent: *
 Allow: /
+Allow: /collections/
+Allow: /topics/
+Allow: /hadith/
+Allow: /about
+Allow: /search
 
-# Disallow search results (dynamic content)
+# Disallow dynamic search results (prevent duplicate content)
 Disallow: /search?*
 
-# Allow important crawlers
+# Allow important assets
+Allow: /*.js$
+Allow: /*.css$
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.svg$
+Allow: /*.woff2$
+
+# Google specific
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 1
 
+# Google Images
+User-agent: Googlebot-Image
+Allow: /
+
+# Bing
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 1
 
-User-agent: Slurp
+# Yandex
+User-agent: Yandex
 Allow: /
+Crawl-delay: 2
+
+# Baidu
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2
+
+# DuckDuckGo
+User-agent: DuckDuckBot
+Allow: /
+
+# Facebook
+User-agent: facebookexternalhit
+Allow: /
+
+# Twitter
+User-agent: Twitterbot
+Allow: /
+
+# LinkedIn
+User-agent: LinkedInBot
+Allow: /
+
+# WhatsApp
+User-agent: WhatsApp
+Allow: /
+
+# Telegram
+User-agent: TelegramBot
+Allow: /
+
+# Block bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
 
 # Sitemap location
 Sitemap: https://sunnah.one/sitemap.xml
+
+# Host directive (for Yandex)
+Host: https://sunnah.one

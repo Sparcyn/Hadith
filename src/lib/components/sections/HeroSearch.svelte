@@ -86,50 +86,53 @@
 	قسم البطل الرئيسي
 	يحتوي على الخلفية الزخرفية والمحتوى
 -->
-<section class="hero-section relative overflow-hidden">
+<section class="hero-section relative overflow-hidden" aria-label="البحث في الأحاديث النبوية" itemscope itemtype="https://schema.org/WebSite">
+	<meta itemprop="url" content="https://sunnah.one"/>
+	<meta itemprop="name" content="الباحث الحديثي"/>
 	
 	<!-- ===================================================================
 		طبقات الأنماط الزخرفية في الخلفية
 	=================================================================== -->
 	
 	<!-- نمط الزليج المغربي -->
-	<div class="pattern-layer pattern-zellige"></div>
+	<div class="pattern-layer pattern-zellige" aria-hidden="true"></div>
 	
 	<!-- نمط الأرابيسك (الزخارف المنحنية) -->
-	<div class="pattern-layer pattern-arabesque"></div>
+	<div class="pattern-layer pattern-arabesque" aria-hidden="true"></div>
 	
 	<!-- نمط النجوم الإسلامية الثمانية -->
-	<div class="pattern-layer pattern-stars"></div>
+	<div class="pattern-layer pattern-stars" aria-hidden="true"></div>
 	
 	<!-- ===================================================================
 		محتوى القسم
 	=================================================================== -->
 	<div class="container relative pt-32 pb-20 md:pt-40 md:pb-28">
-		<div class="max-w-4xl mx-auto text-center">
+		<header class="max-w-4xl mx-auto text-center">
 			
 			<!-- البسملة -->
-			<p class="text-base md:text-lg text-[#1B4D3E] mb-3 font-medium">
+			<p class="text-base md:text-lg text-[#1B4D3E] mb-3 font-medium" aria-label="البسملة">
 				بسم الله الرحمن الرحيم
 			</p>
 			
-			<!-- العنوان الرئيسي -->
-			<h1 class="font-display text-4xl md:text-5xl lg:text-6xl text-[#1B4D3E] mb-4">
+			<!-- العنوان الرئيسي - H1 مهم جداً للـ SEO -->
+			<h1 class="font-display text-4xl md:text-5xl lg:text-6xl text-[#1B4D3E] mb-4" itemprop="name">
 				الباحث الحديثي
 			</h1>
 			
 			<!-- الوصف الفرعي -->
-			<p class="text-lg md:text-xl text-gray-600 mb-10">
+			<p class="text-lg md:text-xl text-gray-600 mb-10" itemprop="description">
 				ابحث واكتشف في أكبر كتب الحديث النبوي
 			</p>
 			
 			<!-- =============================================================
-				صندوق البحث
+				صندوق البحث - مع Schema.org SearchAction
 			============================================================= -->
-			<form onsubmit={handleSearch} class="mb-8">
+			<form onsubmit={handleSearch} class="mb-8" role="search" aria-label="البحث في الأحاديث" itemprop="potentialAction" itemscope itemtype="https://schema.org/SearchAction">
+				<meta itemprop="target" content="https://sunnah.one/search?q={search_term_string}"/>
 				<div class="search-box">
 					
 					<!-- زر البحث -->
-					<button type="submit" class="search-btn">
+					<button type="submit" class="search-btn" aria-label="بحث">
 						بحث
 					</button>
 					
@@ -140,6 +143,11 @@
 							bind:value={searchQuery}
 							placeholder="ابحث عن حديث، راوٍ، أو موضوع..."
 							class="w-full h-11 px-4 bg-transparent border-0 text-base text-gray-800 placeholder:text-gray-400 focus:outline-none"
+							aria-label="ابحث عن حديث"
+							itemprop="query-input"
+							name="search_term_string"
+							autocomplete="off"
+							spellcheck="false"
 						/>
 					</div>
 					
@@ -180,23 +188,24 @@
 			<!-- =============================================================
 				البحث السريع - كلمات مقترحة
 			============================================================= -->
-			<div class="flex flex-wrap items-center justify-center gap-3">
+			<nav class="flex flex-wrap items-center justify-center gap-3" aria-label="بحث سريع">
 				<span class="text-base text-gray-500">بحث سريع:</span>
 				{#each quickSearches as term}
 					<button
 						onclick={() => { searchQuery = term; }}
 						class="quick-tag"
+						aria-label="البحث عن {term}"
 					>
 						{term}
 					</button>
 				{/each}
-			</div>
-		</div>
+			</nav>
+		</header>
 		
 		<!-- =================================================================
 			صف الإحصائيات
 		================================================================= -->
-		<div class="flex items-center justify-center gap-5 md:gap-8 mt-12">
+		<aside class="flex items-center justify-center gap-5 md:gap-8 mt-12" aria-label="إحصائيات الموقع">
 			{#each [
 				{ value: '٢', label: 'لغات' },
 				{ value: '+١٠٠', label: 'موضوع' },
@@ -205,7 +214,7 @@
 			] as stat}
 				<div class="stat-card">
 					<!-- الرقم -->
-					<p class="font-display text-2xl md:text-3xl text-[#1B4D3E] mb-1">
+					<p class="font-display text-2xl md:text-3xl text-[#1B4D3E] mb-1" aria-label="{stat.value} {stat.label}">
 						{stat.value}
 					</p>
 					<!-- التسمية -->

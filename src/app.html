@@ -1,8 +1,32 @@
 <!doctype html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" prefix="og: https://ogp.me/ns#">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		
+		<!-- SEO: Primary Meta Tags (defaults, overridden by pages) -->
+		<meta name="title" content="الباحث الحديثي - موسوعة الأحاديث النبوية | sunnah.one" />
+		<meta name="description" content="موسوعة شاملة للأحاديث النبوية من الكتب الستة الصحيحة: البخاري، مسلم، الترمذي، أبو داود، النسائي، ابن ماجه. ابحث في أكثر من 50,000 حديث نبوي شريف." />
+		<meta name="keywords" content="حديث, أحاديث, السنة النبوية, صحيح البخاري, صحيح مسلم, الكتب الستة, hadith, sunnah, bukhari, muslim, islamic, الإسلام, النبي محمد" />
+		<meta name="author" content="الباحث الحديثي" />
+		<meta name="publisher" content="sunnah.one" />
+		<meta name="copyright" content="الباحث الحديثي" />
+		<meta name="language" content="Arabic" />
+		<meta name="revisit-after" content="1 days" />
+		<meta name="distribution" content="global" />
+		<meta name="rating" content="general" />
+		
+		<!-- SEO: Crawlers & Indexing -->
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+		<meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+		<meta name="bingbot" content="index, follow" />
+		<meta name="google" content="notranslate" />
+		<meta name="google-site-verification" content="YOUR_GOOGLE_VERIFICATION_CODE" />
+		
+		<!-- SEO: Geographic Targeting -->
+		<meta name="geo.region" content="SA" />
+		<meta name="geo.placename" content="Saudi Arabia" />
+		<meta name="ICBM" content="24.7136, 46.6753" />
 		
 		<!-- Performance: DNS Prefetch & Preconnect -->
 		<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
@@ -15,9 +39,7 @@
 		<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
 		<noscript><link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet" /></noscript>
 		
-		<!-- SEO: Essential Meta Tags -->
-		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-		<meta name="googlebot" content="index, follow" />
+		<!-- PWA & Mobile -->
 		<meta name="theme-color" content="#1B4D3E" media="(prefers-color-scheme: light)" />
 		<meta name="theme-color" content="#0a1214" media="(prefers-color-scheme: dark)" />
 		<meta name="color-scheme" content="light dark" />
@@ -29,13 +51,20 @@
 		<meta name="application-name" content="الباحث الحديثي" />
 		<meta name="msapplication-TileColor" content="#1B4D3E" />
 		<meta name="msapplication-config" content="/browserconfig.xml" />
+		<meta name="msapplication-tooltip" content="الباحث الحديثي - موسوعة الأحاديث النبوية" />
+		<meta name="msapplication-starturl" content="/" />
 		
 		<!-- Favicons -->
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
 		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#1B4D3E" />
 		<link rel="manifest" href="/manifest.json" />
+		
+		<!-- SEO: RSS & Sitemap Discovery -->
+		<link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
+		<link rel="alternate" type="application/rss+xml" title="الباحث الحديثي - RSS" href="/rss.xml" />
 		
 		%sveltekit.head%
 	</head>

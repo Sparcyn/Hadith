@@ -202,7 +202,13 @@
 						<!-- Content -->
 						<div class="card-body">
 							<h2 class="card-title">{book.arabicName}</h2>
-							<p class="card-author">{book.arabicAuthor}</p>
+							<a 
+								href="/scholars/{book.slug}" 
+								class="card-author-link"
+								onclick={(e) => e.stopPropagation()}
+							>
+								{book.arabicAuthor}
+							</a>
 							<p class="card-desc">{book.description}</p>
 						</div>
 						
@@ -606,6 +612,33 @@
 		font-size: 14px;
 		color: #9ca3af;
 		margin-bottom: 12px;
+	}
+	
+	.card-author-link {
+		display: inline-block;
+		font-size: 14px;
+		color: #1B4D3E;
+		margin-bottom: 12px;
+		text-decoration: none;
+		position: relative;
+		transition: all 0.2s ease;
+	}
+	.card-author-link::after {
+		content: '';
+		position: absolute;
+		bottom: -2px;
+		left: 0;
+		right: 0;
+		height: 1px;
+		background: currentColor;
+		transform: scaleX(0);
+		transition: transform 0.3s ease;
+	}
+	.card-author-link:hover {
+		color: #d4af37;
+	}
+	.card-author-link:hover::after {
+		transform: scaleX(1);
 	}
 	
 	.card-desc {

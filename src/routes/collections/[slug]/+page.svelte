@@ -170,7 +170,11 @@
 							<span>{collection.grade}</span>
 						</div>
 						<h1 class="book-title">{collection.arabicName}</h1>
-						<p class="book-author">{collection.arabicAuthor} • {collection.year}</p>
+						<p class="book-author">
+							<a href="/scholars/{slug}" class="author-link">{collection.arabicAuthor}</a>
+							<span class="author-separator">•</span>
+							<span>{collection.year}</span>
+						</p>
 					</div>
 				</div>
 				
@@ -326,7 +330,18 @@
 	}
 	
 	.book-title { font-size: 2rem; font-weight: 800; color: white; margin-bottom: 4px; }
-	.book-author { font-size: 15px; color: rgba(255,255,255,0.6); }
+	.book-author { font-size: 15px; color: rgba(255,255,255,0.6); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+	.author-link {
+		color: #d4af37;
+		text-decoration: none;
+		transition: all 0.2s ease;
+		border-bottom: 1px solid transparent;
+	}
+	.author-link:hover {
+		color: #f4d03f;
+		border-bottom-color: #f4d03f;
+	}
+	.author-separator { color: rgba(255,255,255,0.4); }
 	.book-desc { font-size: 16px; color: rgba(255,255,255,0.7); line-height: 1.8; margin-bottom: 24px; max-width: 600px; }
 	
 	.book-stats {

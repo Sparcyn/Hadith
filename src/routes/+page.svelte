@@ -27,10 +27,10 @@
 	<title>الباحث الحديثي - ابحث في السنة النبوية | sunnah.one</title>
 	<meta name="title" content="الباحث الحديثي - ابحث في السنة النبوية | sunnah.one" />
 	<meta name="description" content="الباحث الحديثي - موسوعة شاملة للأحاديث النبوية الشريفة من الكتب الستة الصحيحة: البخاري، مسلم، الترمذي، أبو داود، النسائي، ابن ماجه. ابحث في أكثر من 50,000 حديث." />
-	<meta name="keywords" content="حديث, أحاديث, السنة النبوية, صحيح البخاري, صحيح مسلم, الكتب الستة, hadith, sunnah, bukhari, muslim" />
+	<meta name="keywords" content="حديث, أحاديث, السنة النبوية, صحيح البخاري, صحيح مسلم, الكتب الستة, hadith, sunnah, bukhari, muslim, الإسلام, النبي محمد, أحاديث نبوية, موسوعة الحديث" />
 	<meta name="author" content="الباحث الحديثي" />
 	
-	<!-- Open Graph / Facebook -->
+	<!-- Open Graph / Facebook / WhatsApp -->
 	<meta property="og:type" content="website" />
 	<meta property="og:title" content="الباحث الحديثي - ابحث في السنة النبوية" />
 	<meta property="og:description" content="موسوعة شاملة للأحاديث النبوية من الكتب الستة الصحيحة. ابحث في أكثر من 50,000 حديث نبوي شريف." />
@@ -38,33 +38,157 @@
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />
 	<meta property="og:image:alt" content="الباحث الحديثي - موسوعة الأحاديث النبوية" />
+	<meta property="og:image:type" content="image/png" />
 	
 	<!-- Twitter -->
 	<meta name="twitter:title" content="الباحث الحديثي - ابحث في السنة النبوية" />
 	<meta name="twitter:description" content="موسوعة شاملة للأحاديث النبوية من الكتب الستة الصحيحة" />
 	<meta name="twitter:image" content="https://sunnah.one/og-image.png" />
+	<meta name="twitter:image:alt" content="الباحث الحديثي" />
 	
-	<!-- Schema.org for Homepage -->
+	<!-- Schema.org for Homepage (WebPage) -->
 	{@html `<script type="application/ld+json">
 	{
 		"@context": "https://schema.org",
 		"@type": "WebPage",
+		"@id": "https://sunnah.one/#webpage",
 		"name": "الباحث الحديثي - الصفحة الرئيسية",
-		"description": "موسوعة شاملة للأحاديث النبوية من الكتب الستة الصحيحة",
+		"description": "موسوعة شاملة للأحاديث النبوية من الكتب الستة الصحيحة - ابحث في أكثر من 50,000 حديث",
 		"url": "https://sunnah.one",
-		"mainEntity": {
-			"@type": "ItemList",
-			"name": "كتب الحديث الستة",
-			"numberOfItems": 6,
+		"isPartOf": {"@id": "https://sunnah.one/#website"},
+		"about": {
+			"@type": "Thing",
+			"name": "الحديث النبوي الشريف"
+		},
+		"primaryImageOfPage": {
+			"@type": "ImageObject",
+			"url": "https://sunnah.one/og-image.png"
+		},
+		"breadcrumb": {
+			"@type": "BreadcrumbList",
 			"itemListElement": [
-				{"@type": "Book", "position": 1, "name": "صحيح البخاري", "author": "الإمام البخاري"},
-				{"@type": "Book", "position": 2, "name": "صحيح مسلم", "author": "الإمام مسلم"},
-				{"@type": "Book", "position": 3, "name": "جامع الترمذي", "author": "الإمام الترمذي"},
-				{"@type": "Book", "position": 4, "name": "سنن أبي داود", "author": "الإمام أبو داود"},
-				{"@type": "Book", "position": 5, "name": "سنن النسائي", "author": "الإمام النسائي"},
-				{"@type": "Book", "position": 6, "name": "سنن ابن ماجه", "author": "الإمام ابن ماجه"}
+				{"@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://sunnah.one"}
 			]
 		}
+	}
+	</script>`}
+	
+	<!-- Schema.org for ItemList (Collections) -->
+	{@html `<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "ItemList",
+		"name": "كتب الحديث الستة",
+		"description": "أصح كتب الحديث النبوي الشريف",
+		"numberOfItems": 6,
+		"itemListElement": [
+			{
+				"@type": "ListItem",
+				"position": 1,
+				"item": {
+					"@type": "Book",
+					"name": "صحيح البخاري",
+					"author": {"@type": "Person", "name": "الإمام محمد بن إسماعيل البخاري"},
+					"url": "https://sunnah.one/collections/bukhari",
+					"numberOfPages": 7563,
+					"inLanguage": "ar"
+				}
+			},
+			{
+				"@type": "ListItem",
+				"position": 2,
+				"item": {
+					"@type": "Book",
+					"name": "صحيح مسلم",
+					"author": {"@type": "Person", "name": "الإمام مسلم بن الحجاج"},
+					"url": "https://sunnah.one/collections/muslim",
+					"numberOfPages": 7500,
+					"inLanguage": "ar"
+				}
+			},
+			{
+				"@type": "ListItem",
+				"position": 3,
+				"item": {
+					"@type": "Book",
+					"name": "جامع الترمذي",
+					"author": {"@type": "Person", "name": "الإمام الترمذي"},
+					"url": "https://sunnah.one/collections/tirmidhi",
+					"numberOfPages": 3956,
+					"inLanguage": "ar"
+				}
+			},
+			{
+				"@type": "ListItem",
+				"position": 4,
+				"item": {
+					"@type": "Book",
+					"name": "سنن أبي داود",
+					"author": {"@type": "Person", "name": "الإمام أبو داود"},
+					"url": "https://sunnah.one/collections/abudawud",
+					"numberOfPages": 5274,
+					"inLanguage": "ar"
+				}
+			},
+			{
+				"@type": "ListItem",
+				"position": 5,
+				"item": {
+					"@type": "Book",
+					"name": "سنن النسائي",
+					"author": {"@type": "Person", "name": "الإمام النسائي"},
+					"url": "https://sunnah.one/collections/nasai",
+					"numberOfPages": 5761,
+					"inLanguage": "ar"
+				}
+			},
+			{
+				"@type": "ListItem",
+				"position": 6,
+				"item": {
+					"@type": "Book",
+					"name": "سنن ابن ماجه",
+					"author": {"@type": "Person", "name": "الإمام ابن ماجه"},
+					"url": "https://sunnah.one/collections/ibnmajah",
+					"numberOfPages": 4341,
+					"inLanguage": "ar"
+				}
+			}
+		]
+	}
+	</script>`}
+	
+	<!-- Schema.org for FAQPage (helps with rich snippets) -->
+	{@html `<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "FAQPage",
+		"mainEntity": [
+			{
+				"@type": "Question",
+				"name": "ما هو الباحث الحديثي؟",
+				"acceptedAnswer": {
+					"@type": "Answer",
+					"text": "الباحث الحديثي هو موسوعة شاملة للأحاديث النبوية الشريفة من الكتب الستة الصحيحة، يتيح البحث في أكثر من 50,000 حديث نبوي."
+				}
+			},
+			{
+				"@type": "Question",
+				"name": "ما هي الكتب الستة؟",
+				"acceptedAnswer": {
+					"@type": "Answer",
+					"text": "الكتب الستة هي: صحيح البخاري، صحيح مسلم، جامع الترمذي، سنن أبي داود، سنن النسائي، وسنن ابن ماجه. وهي أصح كتب الحديث النبوي."
+				}
+			},
+			{
+				"@type": "Question",
+				"name": "كيف أبحث عن حديث؟",
+				"acceptedAnswer": {
+					"@type": "Answer",
+					"text": "يمكنك البحث عن أي حديث من خلال كتابة كلمات من نص الحديث أو اسم الراوي أو الموضوع في صندوق البحث."
+				}
+			}
+		]
 	}
 	</script>`}
 </svelte:head>

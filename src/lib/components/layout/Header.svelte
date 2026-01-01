@@ -58,6 +58,7 @@
 	const links = [
 		{ href: '/', label: 'الرئيسية' },        // الصفحة الرئيسية
 		{ href: '/collections', label: 'الكتب' }, // صفحة الكتب
+		{ href: '/scholars', label: 'العلماء' },  // صفحة العلماء
 		{ href: '/topics', label: 'المواضيع' },   // صفحة المواضيع
 		{ href: '/about', label: 'عن الموقع' },   // صفحة عن الموقع
 	];

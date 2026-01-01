@@ -12,6 +12,7 @@
 	// الروابط السريعة - صفحات الموقع الرئيسية
 	const quickLinks = [
 		{ href: '/collections', label: 'كتب الحديث' },
+		{ href: '/scholars', label: 'علماء الحديث' },
 		{ href: '/topics', label: 'المواضيع' },
 		{ href: '/search', label: 'البحث' },
 		{ href: '/about', label: 'عن الموقع' },
