@@ -3,7 +3,44 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		
+		<!-- Performance: Preconnect to external domains -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		
+		<!-- SEO Meta Tags -->
+		<meta name="description" content="الباحث الحديثي - موسوعة شاملة للأحاديث النبوية الشريفة. ابحث في صحيح البخاري ومسلم والترمذي وغيرها." />
+		<meta name="keywords" content="حديث, أحاديث, السنة النبوية, البخاري, مسلم, الترمذي, hadith, sunnah" />
+		<meta name="author" content="الباحث الحديثي" />
+		
+		<!-- Open Graph / Social Media -->
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content="الباحث الحديثي - موسوعة الأحاديث النبوية" />
+		<meta property="og:description" content="ابحث واكتشف في أكبر كتب الحديث النبوي الشريف" />
+		<meta property="og:locale" content="ar_SA" />
+		
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="الباحث الحديثي" />
+		<meta name="twitter:description" content="موسوعة شاملة للأحاديث النبوية الشريفة" />
+		
+		<!-- Theme Color for Mobile Browsers -->
+		<meta name="theme-color" content="#1B4D3E" />
+		<meta name="msapplication-TileColor" content="#1B4D3E" />
+		
+		<!-- Performance: DNS Prefetch -->
+		<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+		
 		%sveltekit.head%
+		
+		<!-- Prevent FOUC (Flash of Unstyled Content) for theme -->
+		<script>
+			(function() {
+				const theme = localStorage.getItem('theme');
+				if (theme === 'dark') document.documentElement.classList.add('dark');
+				else if (theme === 'sepia') document.documentElement.classList.add('sepia');
+			})();
+		</script>
 	</head>
 	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents">%sveltekit.body%</div>

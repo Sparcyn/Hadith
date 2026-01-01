@@ -14,10 +14,15 @@
 </script>
 
 <svelte:head>
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<link rel="preconnect" href="https://fonts.googleapis.com" />
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-	<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Cairo:wght@400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet" />
+	<!-- Performance: Optimized font loading with display=swap -->
+	<link rel="preload" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" as="style" />
+	<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+	<noscript>
+		<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet" />
+	</noscript>
+	
+	<!-- SEO: Default page title -->
+	<title>الباحث الحديثي - موسوعة الأحاديث النبوية</title>
 </svelte:head>
 
 <div class="min-h-screen flex flex-col" dir="rtl">
